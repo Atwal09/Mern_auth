@@ -1,23 +1,29 @@
 import axios from "axios";
 import { useState } from "react";
 
+const API = "https://api.workforme.space";
+
 export default function Register() {
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const update = (field) => (e) => setForm({ ...form, [field]: e.target.value });
+  const update = (field) => (e) =>
+    setForm({ ...form, [field]: e.target.value });
 
   const submit = async () => {
     setError("");
     setSuccess("");
     setLoading(true);
     try {
-      await axios.post("http://localhost:5000/api/auth/register", form);
+      await axios.post(`${API}/api/auth/register`, form);
       setSuccess("Account created! You can now sign in.");
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed. Please try again.");
+      setError(
+        err.response?.data?.message ||
+          "Registration failed. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -33,6 +39,7 @@ export default function Register() {
           disabled={loading}
         />
       </div>
+
       <div className="input-group">
         <label>Email</label>
         <input
@@ -42,6 +49,7 @@ export default function Register() {
           disabled={loading}
         />
       </div>
+
       <div className="input-group">
         <label>Password</label>
         <input
@@ -55,7 +63,11 @@ export default function Register() {
       {error && <div className="msg error">{error}</div>}
       {success && <div className="msg success">{success}</div>}
 
-      <button className={`submit-btn ${loading ? "loading" : ""}`} onClick={submit} disabled={loading}>
+      <button
+        className={`submit-btn ${loading ? "loading" : ""}`}
+        onClick={submit}
+        disabled={loading}
+      >
         {loading ? <span className="spinner" /> : "Create Account"}
       </button>
     </div>
