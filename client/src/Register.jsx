@@ -4,7 +4,11 @@ import { useState } from "react";
 const API = "https://api.workforme.space";
 
 export default function Register() {
-  const [form, setForm] = useState({});
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -19,6 +23,7 @@ export default function Register() {
     try {
       await axios.post(`${API}/api/auth/register`, form);
       setSuccess("Account created! You can now sign in.");
+      setForm({ name: "", email: "", password: "" });
     } catch (err) {
       setError(
         err.response?.data?.message ||
@@ -35,6 +40,7 @@ export default function Register() {
         <label>Full Name</label>
         <input
           placeholder="Jane Smith"
+          value={form.name}
           onChange={update("name")}
           disabled={loading}
         />
@@ -45,6 +51,7 @@ export default function Register() {
         <input
           type="email"
           placeholder="you@example.com"
+          value={form.email}
           onChange={update("email")}
           disabled={loading}
         />
@@ -55,6 +62,7 @@ export default function Register() {
         <input
           type="password"
           placeholder="••••••••"
+          value={form.password}
           onChange={update("password")}
           disabled={loading}
         />
